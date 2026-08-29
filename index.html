@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>Pointage JYT</title>
+
+<style>
+body {
+  margin: 0;
+  background: #f3f4f6;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+main {
+  max-width: 520px;
+  margin: auto;
+  padding: 18px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 3px 16px rgba(0,0,0,.08);
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+.status {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 18px 0;
+}
+
+.ok {
+  color: #047857;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 0;
+  border-bottom: 1px solid #eee;
+}
+
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  padding: 23px;
+  font-size: 21px;
+  font-weight: 800;
+  background: #111827;
+  color: white;
+}
+
+button:disabled {
+  opacity: .4;
+}
+
+.secondary {
+  margin-top: 10px;
+  padding: 13px;
+  font-size: 15px;
+  background: white;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.small {
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<main>
+
+<div class="card">
+
+<h1>Pointage JYT</h1>
+
+<div class="muted">
+SAM3a — Rue Jean Monnet, Farciennes
+</div>
+
+<div id="status" class="status">
+Recherche du GPS…
+</div>
+
+<div class="row">
+<span>Distance chantier</span>
+<b id="distance">—</b>
+</div>
+
+<div class="row">
+<span>Heure d'arrivée</span>
+<b id="arrival">—</b>
+</div>
+
+<div class="row">
+<span>Pointage IN</span>
+<b id="pin">—</b>
+</div>
+
+<div class="row">
+<span>Pointage OUT</span>
+<b id="pout">—</b>
+</div>
+
+<div class="row">
+<span>Départ du site</span>
+<b id="departure">—</b>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<button id="point" disabled>
+POINTAGE IN
+</button>
+
+<button id="reset" class="secondary">
+Nouvelle journée
+</button>
+
+<p class="small muted">
+Rayon GPS : 50 m
+</p>
+
+</div>
+
+
+<div class="card">
+
+<b>Calculs</b>
+
+<div class="row">
+<span>VT – temps travaillé</span>
+<b id="vt">—</b>
+</div>
+
+<div class="row">
+<span>SPT – temps parking</span>
+<b id="spt">—</b>
+</div>
+
+</div>
+
+</main>
+
+
+<script>
+
+const SITE = {
+  lat: 50.436983,
+  lon: 4.570790,
+  radius: 50
+};
+
+
+let data = JSON.parse(
+  localStorage.getItem("pointageJYT") || "{}"
+);
+
+
+const $ = id => document.getElementById(id);
+
+
+function heure(date) {
+
+  if (!date) return "—";
+
+  return new Date(date).toLocaleTimeString(
+    "fr-BE",
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }
+  );
+}
+
+
+function minutesEntre(debut, fin) {
+
+  if (!debut || !fin) return null;
+
+  return Math.max(
+    0,
+    Math.round(
+      (new Date(fin) - new Date(debut)) / 60000
+    )
+  );
+}
+
+
+function duree(minutes) {
+
+  if (minutes === null || minutes === undefined)
+    return "—";
+
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+
+  return h + "h " + String(m).padStart(2,"0");
+}
+
+
+function distanceGPS(lat1, lon1, lat2, lon2) {
+
+  const R = 6371000;
+
+  const p = Math.PI / 180;
+
+  const a =
+    Math.sin((lat2-lat1)*p/2) ** 2 +
+    Math.cos(lat1*p) *
+    Math.cos(lat2*p) *
+    Math.sin((lon2-lon1)*p/2) ** 2;
+
+  return 2 * R *
+    Math.asin(Math.sqrt(a));
+}
+
+
+function afficher() {
+
+  $("arrival").textContent =
+    heure(data.arrival);
+
+  $("pin").textContent =
+    heure(data.pin);
+
+  $("pout").textContent =
+    heure(data.pout);
+
+  $("departure").textContent =
+    heure(data.departure);
+
+
+  const vt =
+    minutesEntre(data.pin, data.pout);
+
+  const spt =
+    minutesEntre(data.arrival, data.pin);
+
+
+  $("vt").textContent =
+    duree(vt);
+
+  $("spt").textContent =
+    duree(spt);
+
+
+  if (!data.pin) {
+
+    $("point").textContent =
+      "POINTAGE IN";
+
+  } else if (!data.pout) {
+
+    $("point").textContent =
+      "POINTAGE OUT";
+
+  } else {
+
+    $("point").textContent =
+      "JOURNÉE TERMINÉE";
+
+  }
+
+
+  $("point").disabled =
+    !data.inside || !!data.pout;
+}
+
+
+function sauvegarder() {
+
+  localStorage.setItem(
+    "pointageJYT",
+    JSON.stringify(data)
+  );
+
+  afficher();
+}
+
+
+$("point").onclick = function() {
+
+  if (!data.pin) {
+
+    data.pin =
+      new Date().toISOString();
+
+  } else {
+
+    data.pout =
+      new Date().toISOString();
+
+  }
+
+  sauvegarder();
+};
+
+
+$("reset").onclick = function() {
+
+  if (
+    confirm("Effacer les données de cette journée ?")
+  ) {
+
+    data = {};
+
+    sauvegarder();
+  }
+
+};
+
+
+if (navigator.geolocation) {
+
+  navigator.geolocation.watchPosition(
+
+    function(position) {
+
+      const lat =
+        position.coords.latitude;
+
+      const lon =
+        position.coords.longitude;
+
+
+      const distance =
+        distanceGPS(
+          lat,
+          lon,
+          SITE.lat,
+          SITE.lon
+        );
+
+
+      const surChantier =
+        distance <= SITE.radius;
+
+
+      $("distance").textContent =
+        Math.round(distance) + " m";
+
+
+      data.inside =
+        surChantier;
+
+
+      if (
+        surChantier &&
+        !data.arrival
+      ) {
+
+        data.arrival =
+          new Date().toISOString();
+
+      }
+
+
+      if (
+        !surChantier &&
+        data.pout &&
+        !data.departure
+      ) {
+
+        data.departure =
+          new Date().toISOString();
+
+      }
+
+
+      if (surChantier) {
+
+        $("status").textContent =
+          "🟢 SUR LE CHANTIER";
+
+        $("status").className =
+          "status ok";
+
+      } else {
+
+        $("status").textContent =
+          "⚪ HORS ZONE";
+
+        $("status").className =
+          "status";
+
+      }
+
+
+      sauvegarder();
+
+    },
+
+    function() {
+
+      $("status").textContent =
+        "⚠️ GPS refusé ou indisponible";
+
+    },
+
+    {
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout: 15000
+    }
+
+  );
+
+} else {
+
+  $("status").textContent =
+    "GPS non disponible";
+
+}
+
+
+afficher();
+
+</script>
+
+</body>
+</html>
