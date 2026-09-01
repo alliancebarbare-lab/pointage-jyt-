@@ -2,397 +2,1109 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta name="theme-color" content="#0755b8">
+
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="default"
+>
 
 <title>Pointage JYT</title>
 
 <style>
 
+/* =====================================================
+   BASE
+   ===================================================== */
+
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  color: #111827;
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
+    "SF Pro Display",
     "Segoe UI",
     sans-serif;
 
-  background-image:
+  color: #172033;
+
+  background:
     linear-gradient(
-      rgba(255,255,255,0.78),
-      rgba(255,255,255,0.88)
-    ),
+      180deg,
+      #f7faff 0%,
+      #eef4fb 55%,
+      #e8f0f8 100%
+    );
+
+  position: relative;
+}
+
+
+/* =====================================================
+   IMAGE DE FOND
+   ===================================================== */
+
+body::before {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: -2;
+
+  background-image:
     url("234B41F5-88BC-4CF3-A2DF-C2B98561D5A8.png");
 
   background-size: cover;
+
   background-position: center;
-  background-attachment: fixed;
+
+  opacity: 0.10;
+
+  filter: blur(1px);
+
+  transform: scale(1.03);
+
 }
 
-main {
+
+/* voile de lecture */
+
+body::after {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: -1;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.72),
+      rgba(245,249,253,0.94)
+    );
+
+}
+
+
+/* =====================================================
+   CONTENEUR
+   ===================================================== */
+
+.app {
+
   width: 100%;
+
   max-width: 520px;
-  margin: auto;
-  padding: 18px;
+
+  margin: 0 auto;
+
+  padding:
+    calc(18px + env(safe-area-inset-top))
+    18px
+    calc(30px + env(safe-area-inset-bottom));
+
 }
 
-/* ---------------- HEADER ---------------- */
+
+/* =====================================================
+   HEADER
+   ===================================================== */
 
 .header {
+
   text-align: center;
-  padding: 10px 0 18px;
+
+  padding: 8px 5px 22px;
+
 }
 
-.header h1 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 850;
-  letter-spacing: -0.5px;
-}
 
-.header .site {
-  margin-top: 5px;
-  color: #4b5563;
-  font-size: 14px;
-}
+.logoMark {
 
-/* ---------------- CARTES ---------------- */
+  display: inline-flex;
 
-.card {
-  background: rgba(255,255,255,0.90);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  align-items: center;
 
-  border-radius: 22px;
-  padding: 20px;
+  justify-content: center;
 
-  margin-bottom: 16px;
+  width: 54px;
+
+  height: 54px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0755b8,
+      #063d88
+    );
+
+  color: white;
+
+  font-size: 28px;
+
+  font-weight: 900;
 
   box-shadow:
-    0 5px 25px rgba(0,0,0,0.12);
+    0 8px 20px rgba(7,85,184,0.22);
 
-  border: 1px solid rgba(255,255,255,0.7);
+  margin-bottom: 10px;
+
 }
 
-/* ---------------- STATUT ---------------- */
 
-.status {
-  text-align: center;
+.header h1 {
 
-  font-size: 21px;
-  font-weight: 850;
+  margin: 0;
 
-  padding: 15px 10px;
+  font-size: 31px;
 
-  border-radius: 15px;
+  line-height: 1.05;
+
+  font-weight: 900;
+
+  letter-spacing: -1px;
+
+}
+
+
+.header .subtitle {
+
+  margin-top: 7px;
+
+  font-size: 15px;
+
+  color: #5c687a;
+
+}
+
+
+.header .site {
+
+  margin-top: 3px;
+
+  font-size: 13px;
+
+  color: #7a8494;
+
+}
+
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+
+.card {
+
+  background:
+    rgba(255,255,255,0.90);
+
+  border:
+    1px solid rgba(255,255,255,0.95);
+
+  border-radius: 25px;
+
+  padding: 18px;
 
   margin-bottom: 15px;
 
-  background: rgba(229,231,235,0.8);
+  box-shadow:
+    0 10px 35px rgba(26,45,72,0.10);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
 }
 
-.status.ok {
-  color: #047857;
-  background: rgba(209,250,229,0.9);
+
+/* =====================================================
+   GPS
+   ===================================================== */
+
+.gpsCard {
+
+  text-align: center;
+
+  padding: 20px 18px 18px;
+
 }
 
-/* ---------------- LIGNES ---------------- */
 
-.row {
-  display: flex;
-  justify-content: space-between;
+.gpsStatus {
+
+  display: inline-flex;
+
   align-items: center;
 
-  padding: 12px 0;
+  gap: 8px;
 
-  border-bottom:
-    1px solid rgba(0,0,0,0.08);
+  padding: 9px 15px;
+
+  border-radius: 999px;
+
+  background: #edf0f4;
+
+  color: #566173;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
 }
 
-.row:last-child {
-  border-bottom: none;
+
+.gpsStatus.ok {
+
+  background: #e2f7ec;
+
+  color: #087443;
+
 }
 
-.label {
-  color: #4b5563;
+
+.gpsDot {
+
+  width: 10px;
+
+  height: 10px;
+
+  border-radius: 50%;
+
+  background: #9aa4b2;
+
 }
 
-.value {
-  font-weight: 750;
+
+.gpsStatus.ok .gpsDot {
+
+  background: #0b9b5b;
+
+  box-shadow:
+    0 0 0 5px rgba(11,155,91,0.12);
+
 }
 
-/* ---------------- BOUTONS ---------------- */
 
-button {
+.distance {
+
+  margin-top: 12px;
+
+  font-size: 46px;
+
+  line-height: 1;
+
+  font-weight: 900;
+
+  letter-spacing: -2px;
+
+  color: #172033;
+
+}
+
+
+.distanceLabel {
+
+  margin-top: 7px;
+
+  font-size: 13px;
+
+  color: #7a8494;
+
+}
+
+
+/* =====================================================
+   TIMELINE
+   ===================================================== */
+
+.timeline {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 5px;
+
+  margin-top: 22px;
+
+}
+
+
+.step {
+
+  position: relative;
+
+  text-align: center;
+
+}
+
+
+.stepLine {
+
+  position: absolute;
+
+  top: 13px;
+
+  left: 50%;
+
   width: 100%;
 
-  border: none;
-  border-radius: 18px;
+  height: 2px;
 
-  padding: 22px 15px;
+  background: #e2e7ee;
 
-  font-size: 21px;
+  z-index: 0;
+
+}
+
+
+.step:last-child .stepLine {
+
+  display: none;
+
+}
+
+
+.stepCircle {
+
+  position: relative;
+
+  z-index: 1;
+
+  width: 27px;
+
+  height: 27px;
+
+  margin: 0 auto 7px;
+
+  border-radius: 50%;
+
+  background: #e8ecf1;
+
+  border: 4px solid white;
+
+  box-shadow:
+    0 0 0 1px #e0e5eb;
+
+}
+
+
+.step.done .stepCircle {
+
+  background: #087443;
+
+  box-shadow:
+    0 0 0 1px #087443;
+
+}
+
+
+.stepText {
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  color: #7b8594;
+
+  text-transform: uppercase;
+
+}
+
+
+.stepTime {
+
+  margin-top: 3px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: #202b3c;
+
+}
+
+
+/* =====================================================
+   INFOS
+   ===================================================== */
+
+.infoGrid {
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 10px;
+
+}
+
+
+.info {
+
+  padding: 13px;
+
+  border-radius: 17px;
+
+  background: #f5f7fa;
+
+}
+
+
+.infoLabel {
+
+  font-size: 12px;
+
+  color: #778294;
+
+}
+
+
+.infoValue {
+
+  margin-top: 5px;
+
+  font-size: 17px;
+
   font-weight: 850;
 
-  background: #111827;
+}
+
+
+/* =====================================================
+   ACTION
+   ===================================================== */
+
+.actionCard {
+
+  padding: 17px;
+
+}
+
+
+button {
+
+  width: 100%;
+
+  border: 0;
+
+  border-radius: 21px;
+
+  min-height: 76px;
+
+  padding: 16px 20px;
+
+  font-family: inherit;
+
+  font-size: 22px;
+
+  font-weight: 900;
+
+  letter-spacing: -0.3px;
+
   color: white;
 
   cursor: pointer;
 
   box-shadow:
-    0 5px 12px rgba(0,0,0,0.18);
+    0 8px 20px rgba(0,0,0,0.14);
 
   transition:
-    transform .12s,
-    opacity .12s;
+    transform 0.12s ease,
+    opacity 0.12s ease;
+
 }
+
 
 button:active {
-  transform: scale(.98);
+
+  transform:
+    scale(0.975);
+
 }
+
 
 button:disabled {
-  opacity: .35;
-  cursor: not-allowed;
+
+  opacity: 0.30;
+
   box-shadow: none;
+
+  cursor: not-allowed;
+
 }
 
-/* Bouton IN */
+
+/* IN */
 
 #point.in {
-  background: #047857;
+
+  background:
+    linear-gradient(
+      135deg,
+      #07945a,
+      #067344
+    );
+
 }
 
-/* Bouton OUT */
+
+/* OUT */
 
 #point.out {
-  background: #b91c1c;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e03a3a,
+      #b82020
+    );
+
 }
 
-/* Bouton QUITTER */
+
+/* terminé */
+
+#point.finished {
+
+  background:
+    #8c96a5;
+
+}
+
+
+/* QUITTER */
 
 #leave {
-  margin-top: 12px;
-
-  background: #d97706;
 
   display: none;
-}
 
-#leave.visible {
-  display: block;
-}
-
-/* Nouvelle journée */
-
-.secondary {
   margin-top: 12px;
 
-  padding: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      #ed9a16,
+      #cf7200
+    );
+
+}
+
+
+#leave.visible {
+
+  display: block;
+
+}
+
+
+/* nouvelle journée */
+
+#reset {
+
+  min-height: 50px;
+
+  margin-top: 12px;
 
   font-size: 15px;
 
-  background: rgba(255,255,255,0.75);
-  color: #111827;
+  color: #303b4d;
+
+  background: white;
 
   border:
-    1px solid rgba(0,0,0,0.15);
+    1px solid #dce2e9;
 
   box-shadow: none;
+
 }
 
-/* ---------------- CALCULS ---------------- */
 
-.calcul-title {
-  font-size: 17px;
-  font-weight: 800;
-  margin-bottom: 5px;
-}
-
-.small {
-  font-size: 13px;
-  color: #6b7280;
-  text-align: center;
-  margin-top: 15px;
-}
-
-/* ---------------- ALERTE ---------------- */
+/* =====================================================
+   MESSAGE
+   ===================================================== */
 
 .message {
+
+  min-height: 23px;
+
+  margin-top: 11px;
+
   text-align: center;
-  font-weight: 700;
-  margin-top: 10px;
-  min-height: 20px;
+
+  font-size: 14px;
+
+  font-weight: 750;
+
+  color: #087443;
+
 }
+
+
+/* =====================================================
+   CALCULS
+   ===================================================== */
+
+.calculTitle {
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+  margin-bottom: 12px;
+
+}
+
+
+.calcRow {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 13px 0;
+
+  border-bottom:
+    1px solid #e7ebf0;
+
+}
+
+
+.calcRow:last-child {
+
+  border-bottom: 0;
+
+}
+
+
+.calcName {
+
+  color: #697587;
+
+  font-size: 14px;
+
+}
+
+
+.calcValue {
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.footer {
+
+  text-align: center;
+
+  color: #8a94a3;
+
+  font-size: 11px;
+
+  padding: 2px 0 8px;
+
+}
+
 
 </style>
 </head>
 
+
 <body>
 
-<main>
+<div class="app">
 
-<!-- HEADER -->
 
-<div class="header">
+  <!-- ================================================
+       HEADER
+       ================================================ -->
 
-  <h1>POINTAGE JYT</h1>
+  <header class="header">
 
-  <div class="site">
-    SAM3a — Rue Jean Monnet, Farciennes
+    <div class="logoMark">
+      ✓
+    </div>
+
+    <h1>
+      POINTAGE JYT
+    </h1>
+
+    <div class="subtitle">
+      Suivi de présence chantier
+    </div>
+
+    <div class="site">
+      SAM3a · Rue Jean Monnet · Farciennes
+    </div>
+
+  </header>
+
+
+  <!-- ================================================
+       GPS
+       ================================================ -->
+
+  <section class="card gpsCard">
+
+    <div
+      id="status"
+      class="gpsStatus"
+    >
+
+      <span class="gpsDot"></span>
+
+      <span id="statusText">
+        Recherche du GPS…
+      </span>
+
+    </div>
+
+
+    <div
+      id="distance"
+      class="distance"
+    >
+      —
+    </div>
+
+
+    <div class="distanceLabel">
+      Distance du chantier · zone 75 m
+    </div>
+
+
+    <!-- TIMELINE -->
+
+    <div class="timeline">
+
+
+      <div
+        id="stepArrival"
+        class="step"
+      >
+
+        <div class="stepCircle"></div>
+
+        <div class="stepLine"></div>
+
+        <div class="stepText">
+          Arrivée
+        </div>
+
+        <div
+          id="arrivalTime"
+          class="stepTime"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div
+        id="stepIn"
+        class="step"
+      >
+
+        <div class="stepCircle"></div>
+
+        <div class="stepLine"></div>
+
+        <div class="stepText">
+          IN
+        </div>
+
+        <div
+          id="inTime"
+          class="stepTime"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div
+        id="stepOut"
+        class="step"
+      >
+
+        <div class="stepCircle"></div>
+
+        <div class="stepLine"></div>
+
+        <div class="stepText">
+          OUT
+        </div>
+
+        <div
+          id="outTime"
+          class="stepTime"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div
+        id="stepDeparture"
+        class="step"
+      >
+
+        <div class="stepCircle"></div>
+
+        <div class="stepText">
+          Départ
+        </div>
+
+        <div
+          id="departureTime"
+          class="stepTime"
+        >
+          —
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================================
+       INFORMATIONS
+       ================================================ -->
+
+  <section class="card">
+
+    <div class="infoGrid">
+
+
+      <div class="info">
+
+        <div class="infoLabel">
+          Heure d'arrivée
+        </div>
+
+        <div
+          id="arrivalInfo"
+          class="infoValue"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info">
+
+        <div class="infoLabel">
+          Pointage IN
+        </div>
+
+        <div
+          id="inInfo"
+          class="infoValue"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info">
+
+        <div class="infoLabel">
+          Pointage OUT
+        </div>
+
+        <div
+          id="outInfo"
+          class="infoValue"
+        >
+          —
+        </div>
+
+      </div>
+
+
+      <div class="info">
+
+        <div class="infoLabel">
+          Départ du site
+        </div>
+
+        <div
+          id="departureInfo"
+          class="infoValue"
+        >
+          —
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+  <!-- ================================================
+       ACTION
+       ================================================ -->
+
+  <section class="card actionCard">
+
+
+    <button
+      id="point"
+      class="in"
+      disabled
+    >
+      POINTAGE IN
+    </button>
+
+
+    <button
+      id="leave"
+    >
+      🚪 JE QUITTE LE CHANTIER
+    </button>
+
+
+    <button
+      id="reset"
+    >
+      Nouvelle journée
+    </button>
+
+
+    <div
+      id="message"
+      class="message"
+    ></div>
+
+
+  </section>
+
+
+  <!-- ================================================
+       CALCULS
+       ================================================ -->
+
+  <section class="card">
+
+    <div class="calculTitle">
+      Temps de la journée
+    </div>
+
+
+    <div class="calcRow">
+
+      <span class="calcName">
+        SPT · temps parking
+      </span>
+
+      <span
+        id="spt"
+        class="calcValue"
+      >
+        —
+      </span>
+
+    </div>
+
+
+    <div class="calcRow">
+
+      <span class="calcName">
+        VT · temps travaillé
+      </span>
+
+      <span
+        id="vt"
+        class="calcValue"
+      >
+        —
+      </span>
+
+    </div>
+
+
+    <div class="calcRow">
+
+      <span class="calcName">
+        GTTR · retour
+      </span>
+
+      <span
+        id="gttr"
+        class="calcValue"
+      >
+        —
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <div class="footer">
+    Pointage JYT · SAM3a
   </div>
+
 
 </div>
-
-
-<!-- SITUATION -->
-
-<div class="card">
-
-  <div id="status" class="status">
-    📍 Recherche du GPS…
-  </div>
-
-  <div class="row">
-    <span class="label">
-      Distance chantier
-    </span>
-
-    <span id="distance" class="value">
-      —
-    </span>
-  </div>
-
-  <div class="row">
-    <span class="label">
-      Heure d'arrivée
-    </span>
-
-    <span id="arrival" class="value">
-      —
-    </span>
-  </div>
-
-  <div class="row">
-    <span class="label">
-      Pointage IN
-    </span>
-
-    <span id="pin" class="value">
-      —
-    </span>
-  </div>
-
-  <div class="row">
-    <span class="label">
-      Pointage OUT
-    </span>
-
-    <span id="pout" class="value">
-      —
-    </span>
-  </div>
-
-  <div class="row">
-    <span class="label">
-      Départ du site
-    </span>
-
-    <span id="departure" class="value">
-      —
-    </span>
-  </div>
-
-</div>
-
-
-<!-- POINTAGE -->
-
-<div class="card">
-
-  <button
-    id="point"
-    disabled>
-    POINTAGE IN
-  </button>
-
-
-  <button
-    id="leave">
-    🚪 JE QUITTE LE CHANTIER
-  </button>
-
-
-  <button
-    id="reset"
-    class="secondary">
-    Nouvelle journée
-  </button>
-
-
-  <div
-    id="message"
-    class="message">
-  </div>
-
-
-  <p class="small">
-    Zone de pointage GPS : 75 m
-  </p>
-
-</div>
-
-
-<!-- CALCULS -->
-
-<div class="card">
-
-  <div class="calcul-title">
-    Calculs
-  </div>
-
-  <div class="row">
-
-    <span class="label">
-      SPT – temps parking
-    </span>
-
-    <span id="spt" class="value">
-      —
-    </span>
-
-  </div>
-
-
-  <div class="row">
-
-    <span class="label">
-      VT – temps travaillé
-    </span>
-
-    <span id="vt" class="value">
-      —
-    </span>
-
-  </div>
-
-</div>
-
-</main>
 
 
 <script>
 
 /* =====================================================
-   CONFIGURATION DU CHANTIER
+   CONFIGURATION
    ===================================================== */
 
 const SITE = {
@@ -407,17 +1119,16 @@ const SITE = {
 
 
 /* =====================================================
-   DONNÉES DE LA JOURNÉE
+   DONNÉES
    ===================================================== */
 
-let data =
-  JSON.parse(
-    localStorage.getItem("pointageJYT") || "{}"
-  );
+let data = JSON.parse(
+  localStorage.getItem("pointageJYT") || "{}"
+);
 
 
 /* =====================================================
-   RACCOURCI DOM
+   RACCOURCI
    ===================================================== */
 
 const $ = id =>
@@ -430,29 +1141,31 @@ const $ = id =>
 
 function heure(date) {
 
-  if (!date)
+  if (!date) {
     return "—";
+  }
 
   return new Date(date)
     .toLocaleTimeString(
       "fr-BE",
       {
         hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
+        minute: "2-digit"
       }
     );
+
 }
 
 
 /* =====================================================
-   CALCUL MINUTES
+   MINUTES
    ===================================================== */
 
 function minutesEntre(debut, fin) {
 
-  if (!debut || !fin)
+  if (!debut || !fin) {
     return null;
+  }
 
   return Math.max(
     0,
@@ -468,7 +1181,7 @@ function minutesEntre(debut, fin) {
 
 
 /* =====================================================
-   FORMAT DURÉE
+   DURÉE
    ===================================================== */
 
 function duree(minutes) {
@@ -476,20 +1189,22 @@ function duree(minutes) {
   if (
     minutes === null ||
     minutes === undefined
-  )
+  ) {
+
     return "—";
 
-  const heures =
+  }
+
+  const h =
     Math.floor(minutes / 60);
 
-  const minutesRestantes =
+  const m =
     minutes % 60;
 
   return (
-    heures +
+    h +
     "h " +
-    String(minutesRestantes)
-      .padStart(2, "0")
+    String(m).padStart(2, "0")
   );
 
 }
@@ -536,149 +1251,6 @@ function distanceGPS(
 
 
 /* =====================================================
-   AFFICHAGE
-   ===================================================== */
-
-function afficher() {
-
-  $("arrival").textContent =
-    heure(data.arrival);
-
-  $("pin").textContent =
-    heure(data.pin);
-
-  $("pout").textContent =
-    heure(data.pout);
-
-  $("departure").textContent =
-    heure(data.departure);
-
-
-  /* SPT */
-
-  $("spt").textContent =
-    duree(
-      minutesEntre(
-        data.arrival,
-        data.pin
-      )
-    );
-
-
-  /* VT */
-
-  $("vt").textContent =
-    duree(
-      minutesEntre(
-        data.pin,
-        data.pout
-      )
-    );
-
-
-  const button =
-    $("point");
-
-
-  /* -------------------------------
-     AVANT IN
-     ------------------------------- */
-
-  if (!data.pin) {
-
-    button.textContent =
-      "POINTAGE IN";
-
-    button.className =
-      "in";
-
-    button.disabled =
-      !data.inside;
-
-  }
-
-
-  /* -------------------------------
-     ENTRE IN ET OUT
-     ------------------------------- */
-
-  else if (!data.pout) {
-
-    button.textContent =
-      "POINTAGE OUT";
-
-    button.className =
-      "out";
-
-    button.disabled =
-      !data.inside;
-
-  }
-
-
-  /* -------------------------------
-     APRÈS OUT
-     ------------------------------- */
-
-  else {
-
-    button.textContent =
-      "POINTAGE TERMINÉ";
-
-    button.className = "";
-
-    button.disabled =
-      true;
-
-  }
-
-
-  /* -------------------------------
-     BOUTON QUITTER
-     ------------------------------- */
-
-  if (
-    data.pout &&
-    !data.departure
-  ) {
-
-    $("leave")
-      .classList
-      .add("visible");
-
-  }
-
-  else {
-
-    $("leave")
-      .classList
-      .remove("visible");
-
-  }
-
-
-  /* -------------------------------
-     MESSAGE
-     ------------------------------- */
-
-  if (data.departure) {
-
-    $("message").textContent =
-      "✅ Journée terminée";
-
-  }
-
-  else {
-
-    $("message").textContent =
-      "";
-
-  }
-
-}
-
-
-/* =====================================================
    SAUVEGARDE
    ===================================================== */
 
@@ -695,34 +1267,215 @@ function sauvegarder() {
 
 
 /* =====================================================
-   BOUTON IN / OUT
+   ÉTAPE TIMELINE
+   ===================================================== */
+
+function done(id, active) {
+
+  const el = $(id);
+
+  if (!el) {
+    return;
+  }
+
+  if (active) {
+    el.classList.add("done");
+  }
+  else {
+    el.classList.remove("done");
+  }
+
+}
+
+
+/* =====================================================
+   AFFICHAGE
+   ===================================================== */
+
+function afficher() {
+
+
+  /* heures */
+
+  $("arrivalTime").textContent =
+    heure(data.arrival);
+
+  $("inTime").textContent =
+    heure(data.pin);
+
+  $("outTime").textContent =
+    heure(data.pout);
+
+  $("departureTime").textContent =
+    heure(data.departure);
+
+
+  $("arrivalInfo").textContent =
+    heure(data.arrival);
+
+  $("inInfo").textContent =
+    heure(data.pin);
+
+  $("outInfo").textContent =
+    heure(data.pout);
+
+  $("departureInfo").textContent =
+    heure(data.departure);
+
+
+  /* timeline */
+
+  done(
+    "stepArrival",
+    !!data.arrival
+  );
+
+  done(
+    "stepIn",
+    !!data.pin
+  );
+
+  done(
+    "stepOut",
+    !!data.pout
+  );
+
+  done(
+    "stepDeparture",
+    !!data.departure
+  );
+
+
+  /* calculs */
+
+  $("spt").textContent =
+    duree(
+      minutesEntre(
+        data.arrival,
+        data.pin
+      )
+    );
+
+
+  $("vt").textContent =
+    duree(
+      minutesEntre(
+        data.pin,
+        data.pout
+      )
+    );
+
+
+  /*
+     GTTR sera exploitable lorsque
+     le retour maison sera ajouté.
+  */
+
+  $("gttr").textContent =
+    data.gttr || "—";
+
+
+  /* bouton principal */
+
+  const button =
+    $("point");
+
+
+  if (!data.pin) {
+
+    button.textContent =
+      "POINTAGE IN";
+
+    button.className =
+      "in";
+
+    button.disabled =
+      !data.inside;
+
+  }
+
+  else if (!data.pout) {
+
+    button.textContent =
+      "POINTAGE OUT";
+
+    button.className =
+      "out";
+
+    button.disabled =
+      !data.inside;
+
+  }
+
+  else {
+
+    button.textContent =
+      "POINTAGE TERMINÉ";
+
+    button.className =
+      "finished";
+
+    button.disabled =
+      true;
+
+  }
+
+
+  /* bouton départ */
+
+  if (
+    data.pout &&
+    !data.departure
+  ) {
+
+    $("leave")
+      .classList
+      .add("visible");
+
+  }
+  else {
+
+    $("leave")
+      .classList
+      .remove("visible");
+
+  }
+
+
+  /* message */
+
+  if (data.departure) {
+
+    $("message").textContent =
+      "✅ Journée terminée";
+
+  }
+
+}
+
+
+/* =====================================================
+   POINTAGE IN / OUT
    ===================================================== */
 
 $("point").onclick =
 function() {
 
 
-  /* IN */
-
   if (!data.pin) {
 
     data.pin =
-      new Date()
-      .toISOString();
+      new Date().toISOString();
 
     $("message").textContent =
       "✅ Pointage IN enregistré";
 
   }
 
-
-  /* OUT */
-
   else if (!data.pout) {
 
     data.pout =
-      new Date()
-      .toISOString();
+      new Date().toISOString();
 
     $("message").textContent =
       "✅ Pointage OUT enregistré";
@@ -736,11 +1489,12 @@ function() {
 
 
 /* =====================================================
-   BOUTON JE QUITTE
+   JE QUITTE LE CHANTIER
    ===================================================== */
 
 $("leave").onclick =
 function() {
+
 
   if (!data.pout) {
 
@@ -755,8 +1509,7 @@ function() {
   if (!data.departure) {
 
     data.departure =
-      new Date()
-      .toISOString();
+      new Date().toISOString();
 
     sauvegarder();
 
@@ -774,6 +1527,7 @@ function() {
 
 $("reset").onclick =
 function() {
+
 
   if (
     confirm(
@@ -798,9 +1552,11 @@ if (
   navigator.geolocation
 ) {
 
+
   navigator.geolocation.watchPosition(
 
     function(position) {
+
 
       const latitude =
         position.coords.latitude;
@@ -811,15 +1567,10 @@ if (
 
       const distance =
         distanceGPS(
-
           latitude,
-
           longitude,
-
           SITE.latitude,
-
           SITE.longitude
-
         );
 
 
@@ -827,20 +1578,19 @@ if (
         distance <= SITE.radius;
 
 
-      /* Distance */
+      /* distance */
 
       $("distance").textContent =
-        Math.round(distance) +
-        " m";
+        Math.round(distance) + " m";
 
 
-      /* Zone */
+      /* zone */
 
       data.inside =
         inside;
 
 
-      /* ARRIVÉE AUTOMATIQUE */
+      /* arrivée automatique */
 
       if (
         inside &&
@@ -848,33 +1598,31 @@ if (
       ) {
 
         data.arrival =
-          new Date()
-          .toISOString();
+          new Date().toISOString();
 
       }
 
 
-      /* STATUT */
+      /* statut */
 
       if (inside) {
 
-        $("status").textContent =
-          "🟢 SUR LE CHANTIER";
+        $("statusText").textContent =
+          "SUR LE CHANTIER";
 
         $("status")
           .className =
-          "status ok";
+          "gpsStatus ok";
 
       }
-
       else {
 
-        $("status").textContent =
-          "⚪ HORS ZONE";
+        $("statusText").textContent =
+          "HORS ZONE";
 
         $("status")
           .className =
-          "status";
+          "gpsStatus";
 
       }
 
@@ -884,14 +1632,22 @@ if (
     },
 
 
-    function() {
+    function(error) {
 
-      $("status").textContent =
-        "⚠️ GPS refusé ou indisponible";
+
+      $("statusText").textContent =
+        "GPS indisponible";
+
 
       $("status")
         .className =
-        "status";
+        "gpsStatus";
+
+
+      console.log(
+        "Erreur GPS:",
+        error
+      );
 
     },
 
@@ -912,11 +1668,10 @@ if (
   );
 
 }
-
 else {
 
-  $("status").textContent =
-    "⚠️ GPS non disponible";
+  $("statusText").textContent =
+    "GPS non disponible";
 
 }
 
